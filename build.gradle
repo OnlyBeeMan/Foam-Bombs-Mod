@@ -77,3 +77,21 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+tasks.register('checkRenderState') {
+	doLast {
+		configurations.compileClasspath.each { file ->
+			if (file.name.contains("minecraft-mapped")) {
+				try {
+					def classLoader = new URLClassLoader([file.toURI().toURL()] as java.net.URL[])
+					def clazz = classLoader.loadClass("net.minecraft.client.renderer.entity.TntRenderer")
+					println "--- TntRenderer Methods ---"
+					clazz.getDeclaredMethods().each { m -> 
+						println "Method: " + m.name
+						m.getParameterTypes().each { p -> println "   Param: " + p.name }
+					}
+				} catch (Exception e) {}
+			}
+		}
+	}
+}
