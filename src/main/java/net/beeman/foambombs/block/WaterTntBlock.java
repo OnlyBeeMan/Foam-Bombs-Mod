@@ -38,6 +38,7 @@ public class WaterTntBlock extends Block {
                 // Spawn TNT entity on server side
                 if (!level.isClientSide()) {
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player);
+                    net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.add(tntEntity.getUUID());
                     level.addFreshEntity(tntEntity);
                     level.gameEvent(player, GameEvent.PRIME_FUSE, pos);
                 }
@@ -63,5 +64,32 @@ public class WaterTntBlock extends Block {
         }
 
         return super.useItemOn(stack, state, level, pos, player, hand, hit);
+    }
+
+    @Override
+    protected void onProjectileHit(Level level, BlockState state, net.minecraft.world.phys.BlockHitResult hitResult, net.minecraft.world.entity.projectile.Projectile projectile) {
+        if (!level.isClientSide()) {
+            if (projectile instanceof net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion thrownPotion) {
+                ItemStack item = thrownPotion.getItem();
+                PotionContents contents = item.get(DataComponents.POTION_CONTENTS);
+                if (contents != null && contents.is(Potions.WATER)) {
+                    BlockPos pos = hitResult.getBlockPos();
+                    level.removeBlock(pos, false);
+                    
+                    // Trigger sound
+                    level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 
+                                    SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    
+                    PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 
+                        projectile.getOwner() instanceof net.minecraft.world.entity.LivingEntity ? (net.minecraft.world.entity.LivingEntity) projectile.getOwner() : null);
+                    net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.add(tntEntity.getUUID());
+                    level.addFreshEntity(tntEntity);
+                    level.gameEvent(projectile, GameEvent.PRIME_FUSE, pos);
+                    
+                    // Discard the potion projectile since it broke on the TNT
+                    projectile.discard();
+                }
+            }
+        }
     }
 }

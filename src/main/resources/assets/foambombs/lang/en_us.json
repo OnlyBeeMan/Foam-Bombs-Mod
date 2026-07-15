@@ -1,4 +1,6 @@
 {
   "block.foambombs.water_tnt": "Water TNT",
-  "item.foambombs.water_tnt": "Water TNT"
+  "item.foambombs.water_tnt": "Water TNT",
+  "block.foambombs.healing_foam": "Healing Foam",
+  "item.foambombs.healing_foam": "Healing Foam Bucket"
 }
