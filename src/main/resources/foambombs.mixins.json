@@ -3,7 +3,9 @@
 	"package": "net.beeman.foambombs.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"PrimedTntMixin"
+		"PrimedTntMixin",
+		"SulfurCubeMixin",
+		"SulfurCubeInvoker"
 	],
 	"client": [
 		"FogRendererMixin"
