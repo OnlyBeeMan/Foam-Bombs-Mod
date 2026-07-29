@@ -1,6 +1,6 @@
 package net.beeman.foambombs;
 
-import net.beeman.foambombs.block.WaterTntBlock;
+import net.beeman.foambombs.block.HealingFoamTntBlock;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
@@ -22,20 +22,20 @@ public class FoamBombs implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	// Define resource keys for both Block and Item
-	public static final ResourceKey<Block> WATER_TNT_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("water_tnt"));
-	public static final ResourceKey<Item> WATER_TNT_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("water_tnt"));
+	public static final ResourceKey<Block> HEALING_FOAM_TNT_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("healing_foam_tnt"));
+	public static final ResourceKey<Item> HEALING_FOAM_TNT_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("healing_foam_tnt"));
 	
 	// Track custom TNT entities in-memory
-	public static final java.util.Set<java.util.UUID> WATER_TNT_UUIDS = new java.util.HashSet<>();
+	public static final java.util.Set<java.util.UUID> HEALING_FOAM_TNT_UUIDS = new java.util.HashSet<>();
 
 	// Define keys for Healing Foam
 	public static final ResourceKey<Block> HEALING_FOAM_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("healing_foam"));
 	public static final ResourceKey<Item> HEALING_FOAM_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("healing_foam"));
 
 	// Instantiate the blocks
-	public static final Block WATER_TNT_REGISTRY = new WaterTntBlock(
+	public static final Block HEALING_FOAM_TNT_REGISTRY = new HealingFoamTntBlock(
 		BlockBehaviour.Properties.ofFullCopy(Blocks.TNT)
-			.setId(WATER_TNT_BLOCK_KEY)
+			.setId(HEALING_FOAM_TNT_BLOCK_KEY)
 	);
 	
 	public static final Block HEALING_FOAM_REGISTRY = new net.beeman.foambombs.block.HealingFoamBlock(
@@ -53,9 +53,9 @@ public class FoamBombs implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Initializing Foam Bombs mod...");
 
-		// Register Water TNT Block and Item
-		Registry.register(BuiltInRegistries.BLOCK, id("water_tnt"), WATER_TNT_REGISTRY);
-		Registry.register(BuiltInRegistries.ITEM, id("water_tnt"), new BlockItem(WATER_TNT_REGISTRY, new Item.Properties().setId(WATER_TNT_ITEM_KEY)));
+		// Register Healing Foam TNT Block and Item
+		Registry.register(BuiltInRegistries.BLOCK, id("healing_foam_tnt"), HEALING_FOAM_TNT_REGISTRY);
+		Registry.register(BuiltInRegistries.ITEM, id("healing_foam_tnt"), new BlockItem(HEALING_FOAM_TNT_REGISTRY, new Item.Properties().setId(HEALING_FOAM_TNT_ITEM_KEY)));
 		
 		// Register Healing Foam Block and Bucket Item
 		Registry.register(BuiltInRegistries.BLOCK, id("healing_foam"), HEALING_FOAM_REGISTRY);
@@ -63,7 +63,7 @@ public class FoamBombs implements ModInitializer {
 
 		// Add items to Creative Menu
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(content -> {
-			content.accept(WATER_TNT_REGISTRY);
+			content.accept(HEALING_FOAM_TNT_REGISTRY);
 			content.accept(HEALING_FOAM_ITEM_REGISTRY);
 		});
 	}

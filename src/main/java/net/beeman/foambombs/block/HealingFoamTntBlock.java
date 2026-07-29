@@ -2,7 +2,6 @@ package net.beeman.foambombs.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,9 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class WaterTntBlock extends Block {
+public class HealingFoamTntBlock extends Block {
 
-    public WaterTntBlock(BlockBehaviour.Properties properties) {
+    public HealingFoamTntBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
@@ -38,7 +37,7 @@ public class WaterTntBlock extends Block {
                 // Spawn TNT entity on server side
                 if (!level.isClientSide()) {
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player);
-                    net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.add(tntEntity.getUUID());
+                    net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.add(tntEntity.getUUID());
                     level.addFreshEntity(tntEntity);
                     level.gameEvent(player, GameEvent.PRIME_FUSE, pos);
                 }
@@ -67,7 +66,7 @@ public class WaterTntBlock extends Block {
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, net.minecraft.world.phys.BlockHitResult hitResult, net.minecraft.world.entity.projectile.Projectile projectile) {
+    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hitResult, net.minecraft.world.entity.projectile.Projectile projectile) {
         if (!level.isClientSide()) {
             if (projectile instanceof net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion thrownPotion) {
                 ItemStack item = thrownPotion.getItem();
@@ -82,7 +81,7 @@ public class WaterTntBlock extends Block {
                                     
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 
                         projectile.getOwner() instanceof net.minecraft.world.entity.LivingEntity ? (net.minecraft.world.entity.LivingEntity) projectile.getOwner() : null);
-                    net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.add(tntEntity.getUUID());
+                    net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.add(tntEntity.getUUID());
                     level.addFreshEntity(tntEntity);
                     level.gameEvent(projectile, GameEvent.PRIME_FUSE, pos);
                     

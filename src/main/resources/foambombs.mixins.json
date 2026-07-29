@@ -5,6 +5,9 @@
 	"mixins": [
 		"PrimedTntMixin"
 	],
+	"client": [
+		"FogRendererMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

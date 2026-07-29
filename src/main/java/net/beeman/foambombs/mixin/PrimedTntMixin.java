@@ -24,7 +24,7 @@ public class PrimedTntMixin {
         PrimedTnt tnt = (PrimedTnt) (Object) this;
         
         // Only run logic on the server side on the very last tick when fuse is 0 or 1
-        if (tnt.getFuse() <= 1 && net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.contains(tnt.getUUID())) {
+        if (tnt.getFuse() <= 1 && net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.contains(tnt.getUUID())) {
             Level level = tnt.level();
             
             if (!level.isClientSide()) {
@@ -81,7 +81,7 @@ public class PrimedTntMixin {
                 level.playSound(null, tnt.getX(), tnt.getY(), tnt.getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F, (1.0F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F) * 0.7F);
                 
                 // Clean up the UUID set
-                net.beeman.foambombs.FoamBombs.WATER_TNT_UUIDS.remove(tnt.getUUID());
+                net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.remove(tnt.getUUID());
             }
             
             // Discard entity and cancel original tick so it doesn't run the vanilla explosion

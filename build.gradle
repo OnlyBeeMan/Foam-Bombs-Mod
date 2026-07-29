@@ -78,22 +78,8 @@ publishing {
 	}
 }
 
-tasks.register('inspectClasses') {
-	doLast {
-		configurations.compileClasspath.each { file ->
-			if (file.name.contains("minecraft-mapped")) {
-				try {
-					def zipFile = new java.util.zip.ZipFile(file)
-					def entries = zipFile.entries()
-					while (entries.hasMoreElements()) {
-						def entry = entries.nextElement()
-						if (entry.getName().contains("Potion") || entry.getName().contains("potion")) {
-							println "Found: " + entry.getName()
-						}
-					}
-					zipFile.close()
-				} catch (Exception e) {}
-			}
-		}
-	}
-}
+
+
+
+
+
