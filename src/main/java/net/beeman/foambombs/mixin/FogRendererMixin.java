@@ -33,10 +33,12 @@ public class FogRendererMixin {
             FogData fogData = cir.getReturnValue();
             if (fogData != null) {
                 // Set dense fog distances matching powder snow fog effect
-                fogData.environmentalStart = -8.0F;
-                fogData.environmentalEnd = 2.0F;
-                fogData.renderDistanceStart = -8.0F;
-                fogData.renderDistanceEnd = 2.0F;
+                fogData.environmentalStart = 0.0F;
+                fogData.environmentalEnd = 3.0F;
+                fogData.renderDistanceStart = 0.0F;
+                fogData.renderDistanceEnd = 3.0F;
+                fogData.skyEnd = 0.0F;
+                fogData.cloudEnd = 0.0F;
                 fogData.color.set(1.0F, 0.714F, 0.757F, 1.0F);
             }
         }

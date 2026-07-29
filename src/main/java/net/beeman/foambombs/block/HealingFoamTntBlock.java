@@ -37,6 +37,7 @@ public class HealingFoamTntBlock extends Block {
                 // Spawn TNT entity on server side
                 if (!level.isClientSide()) {
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player);
+                    tntEntity.setBlockState(state);
                     net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.add(tntEntity.getUUID());
                     level.addFreshEntity(tntEntity);
                     level.gameEvent(player, GameEvent.PRIME_FUSE, pos);
@@ -81,6 +82,7 @@ public class HealingFoamTntBlock extends Block {
                                     
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 
                         projectile.getOwner() instanceof net.minecraft.world.entity.LivingEntity ? (net.minecraft.world.entity.LivingEntity) projectile.getOwner() : null);
+                    tntEntity.setBlockState(state);
                     net.beeman.foambombs.FoamBombs.HEALING_FOAM_TNT_UUIDS.add(tntEntity.getUUID());
                     level.addFreshEntity(tntEntity);
                     level.gameEvent(projectile, GameEvent.PRIME_FUSE, pos);
