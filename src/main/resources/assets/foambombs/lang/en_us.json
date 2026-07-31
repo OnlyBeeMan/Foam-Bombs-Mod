@@ -2,5 +2,13 @@
   "block.foambombs.healing_foam_tnt": "Healing Foam TNT",
   "item.foambombs.healing_foam_tnt": "Healing Foam TNT",
   "block.foambombs.healing_foam": "Healing Foam",
-  "item.foambombs.healing_foam": "Healing Foam Bucket"
+  "item.foambombs.healing_foam": "Healing Foam Bucket",
+  "block.foambombs.invisibility_foam_tnt": "Invisibility Foam TNT",
+  "item.foambombs.invisibility_foam_tnt": "Invisibility Foam TNT",
+  "block.foambombs.invisibility_foam": "Invisibility Foam",
+  "item.foambombs.invisibility_foam": "Invisibility Foam Bucket",
+  "block.foambombs.poison_foam_tnt": "Poison Foam TNT",
+  "item.foambombs.poison_foam_tnt": "Poison Foam TNT",
+  "block.foambombs.poison_foam": "Poison Foam",
+  "item.foambombs.poison_foam": "Poison Foam Bucket"
 }

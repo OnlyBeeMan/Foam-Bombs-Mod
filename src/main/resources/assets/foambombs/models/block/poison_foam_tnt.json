@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "foambombs:block/poison_foam_tnt_top",
+    "bottom": "foambombs:block/poison_foam_tnt_bottom",
+    "side": "foambombs:block/poison_foam_tnt_side"
+  }
+}

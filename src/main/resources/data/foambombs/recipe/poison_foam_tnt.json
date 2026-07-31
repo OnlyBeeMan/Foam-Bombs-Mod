@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "GSG",
+    "SPS",
+    "GSG"
+  ],
+  "key": {
+    "G": "minecraft:gunpowder",
+    "S": "#minecraft:sand",
+    "P": {
+      "item": "minecraft:lingering_potion",
+      "components": {
+        "minecraft:potion_contents": "minecraft:poison"
+      }
+    }
+  },
+  "result": {
+    "id": "foambombs:poison_foam_tnt",
+    "count": 1
+  }
+}

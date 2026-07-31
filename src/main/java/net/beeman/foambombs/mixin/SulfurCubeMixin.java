@@ -17,6 +17,7 @@ import net.minecraft.world.entity.monster.cubemob.SulfurCube;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
@@ -42,13 +43,20 @@ public class SulfurCubeMixin {
     @Final
     private static EntityDataAccessor<Integer> MAX_FUSE;
 
-    private boolean isHoldingHealingFoamTnt(SulfurCube cube) {
+    private static boolean isFoamTntItem(ItemStack stack) {
+        return stack.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY) ||
+               stack.is(FoamBombs.INVISIBILITY_FOAM_TNT_ITEM_KEY) ||
+               stack.is(FoamBombs.POISON_FOAM_TNT_ITEM_KEY);
+    }
+
+    private ItemStack getHeldFoamTnt(SulfurCube cube) {
         ItemStack main = cube.getItemBySlot(EquipmentSlot.MAINHAND);
+        if (isFoamTntItem(main)) return main;
         ItemStack off = cube.getItemBySlot(EquipmentSlot.OFFHAND);
+        if (isFoamTntItem(off)) return off;
         ItemStack body = cube.getItemBySlot(EquipmentSlot.BODY);
-        return main.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY) ||
-               off.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY) ||
-               body.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY);
+        if (isFoamTntItem(body)) return body;
+        return ItemStack.EMPTY;
     }
 
     private void primeSulfurCube(SulfurCube cube) {
@@ -60,7 +68,7 @@ public class SulfurCubeMixin {
 
     @Inject(method = "matchingArchetypes", at = @At("HEAD"), cancellable = true)
     private void onMatchingArchetypes(ItemStack stack, CallbackInfoReturnable<List<SulfurCubeArchetype>> cir) {
-        if (stack.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY)) {
+        if (isFoamTntItem(stack)) {
             SulfurCube cube = (SulfurCube) (Object) this;
             cir.setReturnValue(cube.matchingArchetypes(new ItemStack(Items.TNT)));
         }
@@ -68,14 +76,14 @@ public class SulfurCubeMixin {
 
     @Inject(method = "isSwallowableItem", at = @At("HEAD"), cancellable = true)
     private static void onIsSwallowableItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY)) {
+        if (isFoamTntItem(stack)) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "canHoldItem", at = @At("HEAD"), cancellable = true)
     private void onCanHoldItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY)) {
+        if (isFoamTntItem(stack)) {
             cir.setReturnValue(true);
         }
     }
@@ -88,7 +96,7 @@ public class SulfurCubeMixin {
         if (heldByPlayer.is(Items.POTION)) {
             PotionContents contents = heldByPlayer.get(DataComponents.POTION_CONTENTS);
             if (contents != null && contents.is(Potions.WATER)) {
-                if (isHoldingHealingFoamTnt(cube)) {
+                if (!getHeldFoamTnt(cube).isEmpty()) {
                     if (!cube.level().isClientSide()) {
                         primeSulfurCube(cube);
                     }
@@ -118,7 +126,7 @@ public class SulfurCubeMixin {
             ItemStack item = thrownPotion.getItem();
             PotionContents contents = item.get(DataComponents.POTION_CONTENTS);
             if (contents != null && contents.is(Potions.WATER)) {
-                if (isHoldingHealingFoamTnt(cube)) {
+                if (!getHeldFoamTnt(cube).isEmpty()) {
                     primeSulfurCube(cube);
                     level.playSound(null, cube.getX(), cube.getY(), cube.getZ(),
                             SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -130,8 +138,18 @@ public class SulfurCubeMixin {
     @Inject(method = "tickFuse", at = @At("HEAD"), cancellable = true)
     private void onTickFuse(CallbackInfo ci) {
         SulfurCube cube = (SulfurCube) (Object) this;
-        if (cube.isPrimed() && cube.getFuse() <= 1 && isHoldingHealingFoamTnt(cube)) {
+        ItemStack heldTnt = getHeldFoamTnt(cube);
+
+        if (cube.isPrimed() && cube.getFuse() <= 1 && !heldTnt.isEmpty()) {
             Level level = cube.level();
+            
+            Block foamToPlace = FoamBombs.HEALING_FOAM_REGISTRY;
+            if (heldTnt.is(FoamBombs.INVISIBILITY_FOAM_TNT_ITEM_KEY)) {
+                foamToPlace = FoamBombs.INVISIBILITY_FOAM_REGISTRY;
+            } else if (heldTnt.is(FoamBombs.POISON_FOAM_TNT_ITEM_KEY)) {
+                foamToPlace = FoamBombs.POISON_FOAM_REGISTRY;
+            }
+
             if (!level.isClientSide()) {
                 Set<BlockPos> affectedBlocks = new HashSet<>();
                 float radius = 1.5F;
@@ -176,7 +194,7 @@ public class SulfurCubeMixin {
                 }
                 
                 for (BlockPos pos : affectedBlocks) {
-                    level.setBlock(pos, FoamBombs.HEALING_FOAM_REGISTRY.defaultBlockState().setValue(HealingFoamBlock.PERSISTENT, false), 3);
+                    level.setBlock(pos, foamToPlace.defaultBlockState().setValue(HealingFoamBlock.PERSISTENT, false), 3);
                 }
                 
                 level.playSound(null, cube.getX(), cube.getY(), cube.getZ(),

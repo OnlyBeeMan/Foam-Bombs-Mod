@@ -13,11 +13,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class HealingFoamBlock extends PowderSnowBlock {
+public class InvisibilityFoamBlock extends PowderSnowBlock {
 
     public static final net.minecraft.world.level.block.state.properties.BooleanProperty PERSISTENT = net.minecraft.world.level.block.state.properties.BlockStateProperties.PERSISTENT;
 
-    public HealingFoamBlock(BlockBehaviour.Properties properties) {
+    public InvisibilityFoamBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(PERSISTENT, false));
     }
@@ -40,7 +40,6 @@ public class HealingFoamBlock extends PowderSnowBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // Randomly melt/disappear only if it was NOT placed by a player
         if (!state.getValue(PERSISTENT)) {
             level.removeBlock(pos, false);
         }
@@ -48,12 +47,12 @@ public class HealingFoamBlock extends PowderSnowBlock {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier applier, boolean isInside) {
-        // Slow down movement exactly like powder snow
         entity.makeStuckInBlock(state, new Vec3(0.95D, 1.05D, 0.95D));
         
         if (!level.isClientSide() && entity instanceof LivingEntity living) {
-            // Give Regeneration 1 effect while inside the foam
-            living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 0, false, true));
+            // Apply Invisibility effect for 160 ticks (8 seconds).
+            // Retains an exact 8-second duration when the player exits the foam block.
+            living.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 160, 0, false, true));
         }
     }
 
@@ -63,6 +62,6 @@ public class HealingFoamBlock extends PowderSnowBlock {
         if (!level.isClientSide()) {
             level.levelEvent(2001, pos, net.minecraft.world.level.block.Block.getId(state));
         }
-        return new net.minecraft.world.item.ItemStack(net.beeman.foambombs.FoamBombs.HEALING_FOAM_ITEM_REGISTRY);
+        return new net.minecraft.world.item.ItemStack(net.beeman.foambombs.FoamBombs.INVISIBILITY_FOAM_ITEM_REGISTRY);
     }
 }

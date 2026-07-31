@@ -1,5 +1,7 @@
 {
   "values": [
-    "foambombs:healing_foam_tnt"
+    "foambombs:healing_foam_tnt",
+    "foambombs:invisibility_foam_tnt",
+    "foambombs:poison_foam_tnt"
   ]
 }
