@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "foambombs:item/invisibility_foam_bucket"
+  }
+}

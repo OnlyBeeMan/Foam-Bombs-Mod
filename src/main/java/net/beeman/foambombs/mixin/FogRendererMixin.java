@@ -58,10 +58,10 @@ public class FogRendererMixin {
         if (isFoam) {
             FogData fogData = cir.getReturnValue();
             if (fogData != null) {
-                fogData.environmentalStart = 0.2F;
-                fogData.environmentalEnd = 3.5F;
-                fogData.renderDistanceStart = 0.2F;
-                fogData.renderDistanceEnd = 3.5F;
+                fogData.environmentalStart = -0.5F;
+                fogData.environmentalEnd = 2.0F;
+                fogData.renderDistanceStart = -0.5F;
+                fogData.renderDistanceEnd = 2.0F;
                 fogData.skyEnd = 0.0F;
                 fogData.cloudEnd = 0.0F;
 

@@ -8,7 +8,9 @@
 		"SulfurCubeInvoker"
 	],
 	"client": [
-		"FogRendererMixin"
+		"FogRendererMixin",
+		"CameraMixin",
+		"HudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

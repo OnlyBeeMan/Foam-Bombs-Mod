@@ -23,6 +23,11 @@ public class InvisibilityFoamBlock extends PowderSnowBlock {
     }
 
     @Override
+    public boolean skipRendering(BlockState state, BlockState neighborState, net.minecraft.core.Direction direction) {
+        return neighborState.getBlock() instanceof PowderSnowBlock || super.skipRendering(state, neighborState, direction);
+    }
+
+    @Override
     protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(PERSISTENT);

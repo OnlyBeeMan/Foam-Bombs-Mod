@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "foambombs:item/poison_foam_bucket"
+  }
+}
