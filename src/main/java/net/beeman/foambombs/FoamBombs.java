@@ -49,6 +49,12 @@ public class FoamBombs implements ModInitializer {
 	public static final ResourceKey<Block> POISON_FOAM_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("poison_foam"));
 	public static final ResourceKey<Item> POISON_FOAM_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("poison_foam"));
 
+	// Glowing Foam & TNT
+	public static final ResourceKey<Block> GLOWING_FOAM_TNT_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("glowing_foam_tnt"));
+	public static final ResourceKey<Item> GLOWING_FOAM_TNT_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("glowing_foam_tnt"));
+	public static final ResourceKey<Block> GLOWING_FOAM_BLOCK_KEY = ResourceKey.create(Registries.BLOCK, id("glowing_foam"));
+	public static final ResourceKey<Item> GLOWING_FOAM_ITEM_KEY = ResourceKey.create(Registries.ITEM, id("glowing_foam"));
+
 	// Recipe Serializer
 	public static final RecipeSerializer<FoamTntRecipe> FOAM_TNT_RECIPE_SERIALIZER = new RecipeSerializer<>(
 		MapCodec.unit(new FoamTntRecipe()),
@@ -94,6 +100,18 @@ public class FoamBombs implements ModInitializer {
 		new Item.Properties().stacksTo(1).setId(POISON_FOAM_ITEM_KEY)
 	);
 
+	// Instantiate Glowing Foam blocks and items (Light level 11 - more than Redstone Torch (7), less than Glowstone (15))
+	public static final Block GLOWING_FOAM_TNT_REGISTRY = new net.beeman.foambombs.block.GlowingFoamTntBlock(
+		BlockBehaviour.Properties.ofFullCopy(Blocks.TNT).setId(GLOWING_FOAM_TNT_BLOCK_KEY)
+	);
+	public static final Block GLOWING_FOAM_REGISTRY = new net.beeman.foambombs.block.GlowingFoamBlock(
+		BlockBehaviour.Properties.ofFullCopy(Blocks.POWDER_SNOW).lightLevel((state) -> 11).setId(GLOWING_FOAM_BLOCK_KEY)
+	);
+	public static final Item GLOWING_FOAM_ITEM_REGISTRY = new SolidBucketItem(
+		GLOWING_FOAM_REGISTRY, net.minecraft.sounds.SoundEvents.SLIME_BLOCK_PLACE,
+		new Item.Properties().stacksTo(1).setId(GLOWING_FOAM_ITEM_KEY)
+	);
+
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initializing Foam Bombs mod...");
@@ -119,6 +137,12 @@ public class FoamBombs implements ModInitializer {
 		Registry.register(BuiltInRegistries.BLOCK, id("poison_foam"), POISON_FOAM_REGISTRY);
 		Registry.register(BuiltInRegistries.ITEM, id("poison_foam"), POISON_FOAM_ITEM_REGISTRY);
 
+		// Register Glowing Foam TNT & Block
+		Registry.register(BuiltInRegistries.BLOCK, id("glowing_foam_tnt"), GLOWING_FOAM_TNT_REGISTRY);
+		Registry.register(BuiltInRegistries.ITEM, id("glowing_foam_tnt"), new BlockItem(GLOWING_FOAM_TNT_REGISTRY, new Item.Properties().setId(GLOWING_FOAM_TNT_ITEM_KEY)));
+		Registry.register(BuiltInRegistries.BLOCK, id("glowing_foam"), GLOWING_FOAM_REGISTRY);
+		Registry.register(BuiltInRegistries.ITEM, id("glowing_foam"), GLOWING_FOAM_ITEM_REGISTRY);
+
 		// Add items to Creative Menu
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(content -> {
 			content.accept(HEALING_FOAM_TNT_REGISTRY);
@@ -127,6 +151,8 @@ public class FoamBombs implements ModInitializer {
 			content.accept(INVISIBILITY_FOAM_ITEM_REGISTRY);
 			content.accept(POISON_FOAM_TNT_REGISTRY);
 			content.accept(POISON_FOAM_ITEM_REGISTRY);
+			content.accept(GLOWING_FOAM_TNT_REGISTRY);
+			content.accept(GLOWING_FOAM_ITEM_REGISTRY);
 		});
 	}
 

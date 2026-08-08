@@ -37,15 +37,27 @@ public class FoamTntRecipe extends CustomRecipe {
         if (!isSand(input.getItem(3))) return false;
 
         ItemStack center = input.getItem(4);
-        if (!center.is(Items.LINGERING_POTION)) return false;
-        PotionContents contents = center.get(DataComponents.POTION_CONTENTS);
-        if (contents == null) return false;
+        boolean isGlowItem = center.is(Items.GLOWSTONE) || center.is(Items.GLOWSTONE_DUST) || 
+                             center.is(Items.GLOW_INK_SAC) || center.is(Items.SPECTRAL_ARROW);
 
-        boolean isHealing = contents.is(Potions.HEALING) || contents.is(Potions.STRONG_HEALING);
-        boolean isInvisibility = contents.is(Potions.INVISIBILITY) || contents.is(Potions.LONG_INVISIBILITY);
-        boolean isPoison = contents.is(Potions.POISON) || contents.is(Potions.LONG_POISON) || contents.is(Potions.STRONG_POISON);
+        if (!isGlowItem && !center.is(Items.LINGERING_POTION)) return false;
 
-        if (!isHealing && !isInvisibility && !isPoison) return false;
+        boolean isHealing = false;
+        boolean isInvisibility = false;
+        boolean isPoison = false;
+        boolean isGlowing = isGlowItem;
+
+        if (center.is(Items.LINGERING_POTION)) {
+            PotionContents contents = center.get(DataComponents.POTION_CONTENTS);
+            if (contents == null) return false;
+
+            isHealing = contents.is(Potions.HEALING) || contents.is(Potions.STRONG_HEALING);
+            isInvisibility = contents.is(Potions.INVISIBILITY) || contents.is(Potions.LONG_INVISIBILITY);
+            isPoison = contents.is(Potions.POISON) || contents.is(Potions.LONG_POISON) || contents.is(Potions.STRONG_POISON);
+            isGlowing = isGlowItem || contents.is(Potions.NIGHT_VISION) || contents.is(Potions.LONG_NIGHT_VISION);
+        }
+
+        if (!isHealing && !isInvisibility && !isPoison && !isGlowing) return false;
 
         if (!isSand(input.getItem(5))) return false;
         if (!input.getItem(6).is(Items.GUNPOWDER)) return false;
@@ -58,6 +70,11 @@ public class FoamTntRecipe extends CustomRecipe {
     @Override
     public ItemStack assemble(CraftingInput input) {
         ItemStack center = input.getItem(4);
+        if (center.is(Items.GLOWSTONE) || center.is(Items.GLOWSTONE_DUST) || 
+            center.is(Items.GLOW_INK_SAC) || center.is(Items.SPECTRAL_ARROW)) {
+            return new ItemStack(FoamBombs.GLOWING_FOAM_TNT_REGISTRY);
+        }
+
         PotionContents contents = center.get(DataComponents.POTION_CONTENTS);
         if (contents != null) {
             if (contents.is(Potions.HEALING) || contents.is(Potions.STRONG_HEALING)) {
@@ -68,6 +85,9 @@ public class FoamTntRecipe extends CustomRecipe {
             }
             if (contents.is(Potions.POISON) || contents.is(Potions.LONG_POISON) || contents.is(Potions.STRONG_POISON)) {
                 return new ItemStack(FoamBombs.POISON_FOAM_TNT_REGISTRY);
+            }
+            if (contents.is(Potions.NIGHT_VISION) || contents.is(Potions.LONG_NIGHT_VISION)) {
+                return new ItemStack(FoamBombs.GLOWING_FOAM_TNT_REGISTRY);
             }
         }
         return ItemStack.EMPTY;

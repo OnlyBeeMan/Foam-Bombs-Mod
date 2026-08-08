@@ -21,7 +21,8 @@ public class CameraMixin {
             BlockState state = camera.entity().level().getBlockState(camera.blockPosition());
             if (state.getBlock() instanceof HealingFoamBlock ||
                 state.getBlock() instanceof InvisibilityFoamBlock ||
-                state.getBlock() instanceof PoisonFoamBlock) {
+                state.getBlock() instanceof PoisonFoamBlock ||
+                state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock) {
                 cir.setReturnValue(FogType.POWDER_SNOW);
             }
         }

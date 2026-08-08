@@ -46,7 +46,8 @@ public class SulfurCubeMixin {
     private static boolean isFoamTntItem(ItemStack stack) {
         return stack.is(FoamBombs.HEALING_FOAM_TNT_ITEM_KEY) ||
                stack.is(FoamBombs.INVISIBILITY_FOAM_TNT_ITEM_KEY) ||
-               stack.is(FoamBombs.POISON_FOAM_TNT_ITEM_KEY);
+               stack.is(FoamBombs.POISON_FOAM_TNT_ITEM_KEY) ||
+               stack.is(FoamBombs.GLOWING_FOAM_TNT_ITEM_KEY);
     }
 
     private ItemStack getHeldFoamTnt(SulfurCube cube) {
@@ -148,6 +149,8 @@ public class SulfurCubeMixin {
                 foamToPlace = FoamBombs.INVISIBILITY_FOAM_REGISTRY;
             } else if (heldTnt.is(FoamBombs.POISON_FOAM_TNT_ITEM_KEY)) {
                 foamToPlace = FoamBombs.POISON_FOAM_REGISTRY;
+            } else if (heldTnt.is(FoamBombs.GLOWING_FOAM_TNT_ITEM_KEY)) {
+                foamToPlace = FoamBombs.GLOWING_FOAM_REGISTRY;
             }
 
             if (!level.isClientSide()) {

@@ -10,5 +10,9 @@
   "block.foambombs.poison_foam_tnt": "Poison Foam TNT",
   "item.foambombs.poison_foam_tnt": "Poison Foam TNT",
   "block.foambombs.poison_foam": "Poison Foam",
-  "item.foambombs.poison_foam": "Poison Foam Bucket"
+  "item.foambombs.poison_foam": "Poison Foam Bucket",
+  "block.foambombs.glowing_foam_tnt": "Glowing Foam TNT",
+  "item.foambombs.glowing_foam_tnt": "Glowing Foam TNT",
+  "block.foambombs.glowing_foam": "Glowing Foam",
+  "item.foambombs.glowing_foam": "Glowing Foam Bucket"
 }

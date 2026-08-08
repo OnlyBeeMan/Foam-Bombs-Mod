@@ -40,6 +40,8 @@ public class PrimedTntMixin {
                 foamToPlace = FoamBombs.INVISIBILITY_FOAM_REGISTRY;
             } else if (tntBlock instanceof PoisonFoamTntBlock) {
                 foamToPlace = FoamBombs.POISON_FOAM_REGISTRY;
+            } else if (tntBlock instanceof net.beeman.foambombs.block.GlowingFoamTntBlock) {
+                foamToPlace = FoamBombs.GLOWING_FOAM_REGISTRY;
             }
 
             if (foamToPlace != null) {

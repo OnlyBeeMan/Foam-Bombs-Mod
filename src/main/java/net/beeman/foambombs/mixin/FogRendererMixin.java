@@ -26,7 +26,8 @@ public class FogRendererMixin {
             BlockState state = camera.entity().level().getBlockState(camera.blockPosition());
             if (state.getBlock() instanceof HealingFoamBlock ||
                 state.getBlock() instanceof InvisibilityFoamBlock ||
-                state.getBlock() instanceof PoisonFoamBlock) {
+                state.getBlock() instanceof PoisonFoamBlock ||
+                state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock) {
                 // Force POWDER_SNOW fog type so Minecraft applies powder snow camera culling (blocking outside world/border faces)
                 cir.setReturnValue(FogType.POWDER_SNOW);
             }
@@ -45,6 +46,9 @@ public class FogRendererMixin {
         } else if (state.getBlock() instanceof PoisonFoamBlock) {
             // Toxic green fog color
             color.set(0.2F, 0.8F, 0.2F, 1.0F);
+        } else if (state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock) {
+            // Golden yellow fog color
+            color.set(1.0F, 0.88F, 0.3F, 1.0F);
         }
     }
 
@@ -53,7 +57,8 @@ public class FogRendererMixin {
         BlockState state = level.getBlockState(camera.blockPosition());
         boolean isFoam = state.getBlock() instanceof HealingFoamBlock ||
                          state.getBlock() instanceof InvisibilityFoamBlock ||
-                         state.getBlock() instanceof PoisonFoamBlock;
+                         state.getBlock() instanceof PoisonFoamBlock ||
+                         state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock;
 
         if (isFoam) {
             FogData fogData = cir.getReturnValue();
@@ -71,6 +76,8 @@ public class FogRendererMixin {
                     fogData.color.set(0.6F, 0.9F, 1.0F, 1.0F);
                 } else if (state.getBlock() instanceof PoisonFoamBlock) {
                     fogData.color.set(0.2F, 0.8F, 0.2F, 1.0F);
+                } else if (state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock) {
+                    fogData.color.set(1.0F, 0.88F, 0.3F, 1.0F);
                 }
             }
         }

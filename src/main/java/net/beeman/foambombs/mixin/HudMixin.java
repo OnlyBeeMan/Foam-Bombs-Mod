@@ -28,6 +28,7 @@ public abstract class HudMixin {
     private static final Identifier HEALING_FOAM_OUTLINE = Identifier.fromNamespaceAndPath("foambombs", "textures/misc/healing_foam_outline.png");
     private static final Identifier INVISIBILITY_FOAM_OUTLINE = Identifier.fromNamespaceAndPath("foambombs", "textures/misc/invisibility_foam_outline.png");
     private static final Identifier POISON_FOAM_OUTLINE = Identifier.fromNamespaceAndPath("foambombs", "textures/misc/poison_foam_outline.png");
+    private static final Identifier GLOWING_FOAM_OUTLINE = Identifier.fromNamespaceAndPath("foambombs", "textures/misc/glowing_foam_outline.png");
 
     @Inject(method = "extractCameraOverlays", at = @At("TAIL"))
     private void onExtractCameraOverlays(GuiGraphicsExtractor guiGraphicsExtractor, DeltaTracker deltaTracker, CallbackInfo ci) {
@@ -41,6 +42,8 @@ public abstract class HudMixin {
                     this.extractTextureOverlay(guiGraphicsExtractor, INVISIBILITY_FOAM_OUTLINE, 1.0F);
                 } else if (state.getBlock() instanceof PoisonFoamBlock) {
                     this.extractTextureOverlay(guiGraphicsExtractor, POISON_FOAM_OUTLINE, 1.0F);
+                } else if (state.getBlock() instanceof net.beeman.foambombs.block.GlowingFoamBlock) {
+                    this.extractTextureOverlay(guiGraphicsExtractor, GLOWING_FOAM_OUTLINE, 1.0F);
                 }
             }
         }
