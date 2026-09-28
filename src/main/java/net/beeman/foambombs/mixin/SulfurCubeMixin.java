@@ -1,5 +1,6 @@
 package net.beeman.foambombs.mixin;
 
+import com.llamalad7.mixinextras.lib.antlr.runtime.atn.PredictionContext;
 import net.beeman.foambombs.FoamBombs;
 import net.beeman.foambombs.block.HealingFoamBlock;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.SulfurCubeArchetype;
 import net.minecraft.world.entity.monster.cubemob.SulfurCube;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -104,15 +106,7 @@ public class SulfurCubeMixin {
                     cube.level().playSound(null, cube.getX(), cube.getY(), cube.getZ(),
                             SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-                    if (!player.getAbilities().instabuild) {
-                        heldByPlayer.shrink(1);
-                        ItemStack glassBottle = new ItemStack(Items.GLASS_BOTTLE);
-                        if (heldByPlayer.isEmpty()) {
-                            player.setItemInHand(hand, glassBottle);
-                        } else if (!player.getInventory().add(glassBottle)) {
-                            player.drop(glassBottle, false);
-                        }
-                    }
+                    player.setItemInHand(hand, ItemUtils.createFilledResult(heldByPlayer, player, new ItemStack(Items.GLASS_BOTTLE)));
 
                     cir.setReturnValue(InteractionResult.SUCCESS);
                 }

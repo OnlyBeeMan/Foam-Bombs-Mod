@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -30,9 +31,9 @@ public class GlowingFoamTntBlock extends Block {
         if (stack.is(Items.POTION)) {
             PotionContents component = stack.get(DataComponents.POTION_CONTENTS);
             if (component != null && component.is(Potions.WATER)) {
-                level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 
-                                SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
-                
+                level.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
+
                 if (!level.isClientSide()) {
                     PrimedTnt tntEntity = new PrimedTnt(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, player);
                     tntEntity.setBlockState(state);
@@ -42,17 +43,8 @@ public class GlowingFoamTntBlock extends Block {
 
                 level.removeBlock(pos, false);
 
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                    ItemStack glassBottle = new ItemStack(Items.GLASS_BOTTLE);
-                    if (stack.isEmpty()) {
-                        player.setItemInHand(hand, glassBottle);
-                    } else {
-                        if (!player.getInventory().add(glassBottle)) {
-                            player.drop(glassBottle, false);
-                        }
-                    }
-                }
+                // Replaces the manual shrink, inventory check, and drop() calls
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 
                 return InteractionResult.SUCCESS;
             }
